@@ -1,0 +1,3 @@
+Checkbox with javascript localStorage
+
+======
