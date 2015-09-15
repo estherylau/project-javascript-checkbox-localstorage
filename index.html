@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+		/* http://meyerweb.com/eric/tools/css/reset/ 
+		   v2.0 | 20110126
+		   License: none (public domain)
+		*/
+
+		html, body, div, span, applet, object, iframe,
+		h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+		a, abbr, acronym, address, big, cite, code,
+		del, dfn, em, img, ins, kbd, q, s, samp,
+		small, strike, strong, sub, sup, tt, var,
+		b, u, i, center,
+		dl, dt, dd, ol, ul, li,
+		fieldset, form, label, legend,
+		table, caption, tbody, tfoot, thead, tr, th, td,
+		article, aside, canvas, details, embed, 
+		figure, figcaption, footer, header, hgroup, 
+		menu, nav, output, ruby, section, summary,
+		time, mark, audio, video {
+			margin: 0;
+			padding: 0;
+			border: 0;
+			font-size: 100%;
+			font: inherit;
+			vertical-align: baseline;
+		}
+		/* HTML5 display-role reset for older browsers */
+		article, aside, details, figcaption, figure, 
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+		body {
+			line-height: 1;
+		}
+		ol, ul {
+			list-style: none;
+		}
+		blockquote, q {
+			quotes: none;
+		}
+		blockquote:before, blockquote:after,
+		q:before, q:after {
+			content: '';
+			content: none;
+		}
+		table {
+			border-collapse: collapse;
+			border-spacing: 0;
+		}
+		/* end of reset */
+    }
+</style>
+</head>
+<body>
+	<ul id="myTest">
+		<li>
+			<input type="checkbox" name="test" value="test1" id="test1">
+			<label>Item 1</label>
+		</li>
+		<li>
+			<input type="checkbox" name="test" value="test2" id="test2">
+			<label>Item 2</label>
+		</li>
+		<li>
+			<input type="checkbox" name="test" value="test3" id="test3">
+			<label>Item 3</label>
+		</li>
+		<li>
+			<input type="checkbox" name="test" value="test4" id="test4">
+			<label>Item 4</label>
+		</li>
+		<li>
+			<input type="checkbox" name="test" value="test4" id="test5">
+			<label>Item 5</label>
+		</li>
+	</ul>
+	<button onclick="storage.removeAllStorages();">Remove all Storage</button>
+</body>
+<script type="text/javascript">
+	var storage = {
+		itemLength: document.getElementById('myTest').getElementsByTagName('li').length,
+		init: function() {
+			this.checkStorageComp();
+		},
+		checkStorageComp: function() {
+			if(typeof(Storage) != "undefined") {
+				console.log('web storage is supported');
+				storage.readStorage();
+				storage.detectCheckboxClick();
+			}
+			else {
+				// sorry no web storage support
+				alert('Sorry your broweser do not support web storage.');
+			}
+		},
+		detectCheckboxClick : function() {
+			var inputEle = document.getElementsByTagName('input');
+			for(var i=1;i<inputEle.length+1;i++) {
+				var t = document.getElementById('test' + i);
+				t.onclick = function(j) {
+					return function() {
+						this.checked ? storage.setStorage('test' + j): storage.removeStorage('test' + j);
+					}
+				}(i);
+			}
+		},
+		setStorage: function(ele) {
+			localStorage.setItem(ele, "true");
+		},
+		removeStorage: function(ele) {
+			localStorage.removeItem(ele);
+		},
+		removeAllStorages: function() {
+			localStorage.clear();
+			storage.readStorage();
+		},
+		readStorage: function() {
+			for(var i=1; i<this.itemLength+1; i++) {
+				var c = document.getElementById('test'+i);
+				localStorage.getItem('test'+i)? c.checked = true: c.checked = false;
+			}
+			
+		}
+	}
+
+	storage.init();
+
+</script>
+</html>
